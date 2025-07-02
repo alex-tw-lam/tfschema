@@ -1,0 +1,11 @@
+{
+  "mixed_payload": [
+    "123e4567-e89b-12d3-a456-426614174000",
+    4,
+    {
+      "name": "worker-a",
+      "enabled": true,
+      "retries": 1
+    }
+  ]
+}

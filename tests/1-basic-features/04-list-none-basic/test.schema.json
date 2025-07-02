@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "list_var": {
+      "type": "array",
+      "description": "A basic list variable.",
+      "default": [
+        "a",
+        "b",
+        "c"
+      ],
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [],
+  "additionalProperties": true
+}

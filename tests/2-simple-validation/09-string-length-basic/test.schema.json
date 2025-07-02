@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "string_length_var": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 10
+    }
+  },
+  "required": [
+    "string_length_var"
+  ],
+  "additionalProperties": true
+}

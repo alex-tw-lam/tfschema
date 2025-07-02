@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "string_enum_var": {
+      "type": "string",
+      "enum": [
+        "cat",
+        "dog",
+        "fish"
+      ]
+    }
+  },
+  "required": [
+    "string_enum_var"
+  ],
+  "additionalProperties": true
+}

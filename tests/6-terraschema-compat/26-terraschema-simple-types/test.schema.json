@@ -1,0 +1,124 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "a_bool": {
+      "type": "boolean",
+      "description": "This is a boolean",
+      "default": false
+    },
+    "a_list": {
+      "type": "array",
+      "description": "This is a list of strings",
+      "default": [
+        "a",
+        "b",
+        "c"
+      ],
+      "items": {
+        "type": "string"
+      }
+    },
+    "a_map_of_strings": {
+      "type": "object",
+      "description": "This is a map of strings",
+      "default": {
+        "a": "a",
+        "b": "b",
+        "c": "c"
+      },
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "a_nullable_string": {
+      "title": "Select a type",
+      "description": "This is a nullable string",
+      "anyOf": [
+        {
+          "type": "null",
+          "title": "null"
+        },
+        {
+          "type": "string",
+          "title": "string"
+        }
+      ]
+    },
+    "a_number": {
+      "type": "number",
+      "description": "This is a number"
+    },
+    "a_set": {
+      "type": "array",
+      "description": "This is a set of strings",
+      "default": [
+        "a",
+        "b",
+        "c"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "a_string": {
+      "type": "string",
+      "description": "This is a string",
+      "default": "a string"
+    },
+    "a_tuple": {
+      "type": "array",
+      "description": "This is a tuple",
+      "default": [
+        "a",
+        1,
+        true
+      ],
+      "items": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        }
+      ],
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "an_object": {
+      "type": "object",
+      "description": "This is an object",
+      "default": {
+        "a": "a",
+        "b": 1,
+        "c": true
+      },
+      "properties": {
+        "a": {
+          "type": "string"
+        },
+        "b": {
+          "type": "number"
+        },
+        "c": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "a",
+        "b",
+        "c"
+      ],
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "a_nullable_string",
+    "a_number"
+  ],
+  "additionalProperties": true
+}

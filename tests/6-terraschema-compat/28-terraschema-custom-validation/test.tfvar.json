@@ -1,0 +1,13 @@
+{
+  "a_string_enum_kind_1": "b",
+  "a_string_enum_kind_2": "c",
+  "a_number_enum_kind_1": 2,
+  "a_number_enum_kind_2": 3,
+  "a_number_exclusive_maximum_minimum": 5,
+  "a_number_maximum_minimum": 5,
+  "a_list_maximum_minimum_length": ["item1", "item2", "item3"],
+  "a_string_maximum_minimum_length": "test123",
+  "a_string_set_length": "abcd",
+  "a_string_pattern_1": "192.168.1.1",
+  "a_string_pattern_2": "#FF5733"
+}

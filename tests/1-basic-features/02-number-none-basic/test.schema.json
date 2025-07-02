@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "number_var": {
+      "type": "number",
+      "description": "A basic number variable.",
+      "default": 42
+    }
+  },
+  "required": [],
+  "additionalProperties": true
+}

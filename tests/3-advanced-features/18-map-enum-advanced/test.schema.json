@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "map_enum_advanced_var": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "enum": [
+          "a",
+          "b",
+          "c"
+        ]
+      }
+    }
+  },
+  "required": [
+    "map_enum_advanced_var"
+  ],
+  "additionalProperties": true
+}

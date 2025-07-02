@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "map_var": {
+      "type": "object",
+      "description": "A basic map variable.",
+      "default": {
+        "key1": "value1",
+        "key2": "value2"
+      },
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [],
+  "additionalProperties": true
+}

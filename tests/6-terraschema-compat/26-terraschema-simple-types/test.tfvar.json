@@ -1,0 +1,18 @@
+{
+  "a_string": "test string",
+  "a_number": 42,
+  "a_bool": true,
+  "a_nullable_string": "not null",
+  "a_list": ["x", "y", "z"],
+  "a_map_of_strings": {
+    "key1": "value1",
+    "key2": "value2"
+  },
+  "an_object": {
+    "a": "object string",
+    "b": 100,
+    "c": false
+  },
+  "a_tuple": ["tuple string", 999, true],
+  "a_set": ["unique1", "unique2", "unique3"]
+}

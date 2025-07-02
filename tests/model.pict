@@ -1,0 +1,14 @@
+# Minimal Model - Essential Factors Only
+TYPE:       string, number, bool, list, object, map
+VALIDATION: none, length, range, enum, regex
+FEATURES:   basic, advanced
+
+# --- CONSTRAINTS ---
+
+# Rule 1: Type-specific validation rules
+IF [VALIDATION] = "range" THEN [TYPE] = "number";
+IF [VALIDATION] = "regex" THEN [TYPE] = "string";
+IF [VALIDATION] = "length" THEN [TYPE] IN {"string", "list", "object", "map"};
+
+# Rule 2: Advanced features only for composite types
+IF [FEATURES] = "advanced" THEN [TYPE] IN {"list", "object", "map"}; 

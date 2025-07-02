@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "anything_goes": {
+      "description": "A variable that can be of any type.",
+      "default": "this is a string"
+    }
+  },
+  "required": [],
+  "additionalProperties": true
+}
