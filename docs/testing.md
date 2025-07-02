@@ -1,6 +1,6 @@
-# tf-var-go Test Suite
+# tfschema Test Suite
 
-This directory contains comprehensive end-to-end tests for the `tf-var-go` converter, organized using category partition analysis methodology.
+This directory contains comprehensive end-to-end tests for the `tfschema` converter, organized using category partition analysis methodology.
 
 ## Test Organization
 

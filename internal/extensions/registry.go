@@ -1,4 +1,4 @@
-// Package extensions provides a unified registry system for all tf-var-go extensions.
+// Package extensions provides a unified registry system for all tfschema extensions.
 // This allows new functionality to be added by simply creating new files that
 // register themselves during package initialization.
 package extensions
@@ -11,7 +11,7 @@ import (
 	"github.com/atwlam/tfschema/internal/validation"
 )
 
-// ExtensionRegistry manages all extension points in tf-var-go
+// ExtensionRegistry manages all extension points in tfschema
 type ExtensionRegistry struct {
 	typeConverters    *types.TypeConverterRegistry
 	validationRules   []validation.ParserFunc

@@ -1,8 +1,8 @@
-# tf-var-go Architecture Guide
+# tfschema Architecture Guide
 
 ## Overview
 
-`tf-var-go` follows a **plugin-based, extensible architecture** that adheres to the **"new file" principle** - new features can be added by creating new files without modifying existing code. This design enables safe, incremental feature development and maintains backward compatibility.
+`tfschema` follows a **plugin-based, extensible architecture** that adheres to the **"new file" principle** - new features can be added by creating new files without modifying existing code. This design enables safe, incremental feature development and maintains backward compatibility.
 
 ## Core Architecture Components
 

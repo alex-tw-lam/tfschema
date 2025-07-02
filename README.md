@@ -52,7 +52,7 @@ func init() {
 }
 ```
 
-For complete details, see [ARCHITECTURE.md](./architecture.md).
+For complete details, see [docs/architecture.md](./docs/architecture.md).
 
 ## Installation
 
@@ -397,7 +397,7 @@ Generates:
 
 ## Testing
 
-The project includes comprehensive end-to-end tests covering 21 different scenarios:
+The project includes comprehensive end-to-end tests covering 28 different scenarios:
 
 ```bash
 # Run all tests
@@ -415,16 +415,18 @@ go test -v ./tests
 1. **Basic Features** (8 tests): Core type support
 2. **Simple Validation** (6 tests): Basic validation rules
 3. **Advanced Features** (4 tests): Complex type combinations
-4. **Complex Validation** (3 tests): Highly nested scenarios with tuple support
+4. **Complex Validation** (4 tests): Highly nested scenarios with tuple support
+5. **Edge Cases** (1 test): Special validation scenarios
+6. **Terraschema Compatibility** (4 tests): Legacy compatibility testing
 
-For detailed testing documentation, see [tests/README.md](./tests/README.md).
+For detailed testing documentation, see [docs/testing.md](./docs/testing.md).
 
-## Architecture & Development
+## Documentation
 
-- **Architecture Guide**: [ARCHITECTURE.md](./architecture.md) - Complete guide to the extensible architecture
-- **Extension Examples**: [internal/extensions/examples/](./internal/extensions/examples/) - Sample implementations
-- **Contributing**: Follow the "new file" principle - add features by creating new files
-- **Testing Strategy**: Comprehensive unit, integration, and end-to-end testing
+- **[Architecture Guide](./docs/architecture.md)** - Complete guide to the extensible architecture
+- **[Testing Documentation](./docs/testing.md)** - Comprehensive testing methodology
+- **[API Documentation](./docs/index.md)** - Full API and usage documentation
+- **[Extension Examples](./internal/extensions/examples/)** - Sample implementations
 
 ## License
 
@@ -439,4 +441,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 5. Update documentation as needed
 6. Submit a pull request
 
-For architectural guidance, see [ARCHITECTURE.md](./architecture.md).
+For architectural guidance, see [docs/architecture.md](./docs/architecture.md).
