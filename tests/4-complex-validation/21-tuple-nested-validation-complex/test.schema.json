@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "mixed_payload": {
+      "type": "array",
+      "description": "A complex tuple with nested objects and indexed validation.",
+      "items": [
+        {
+          "type": "string",
+          "minLength": 36,
+          "maxLength": 36
+        },
+        {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 8
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "name": {
+              "type": "string"
+            },
+            "retries": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 3
+            }
+          },
+          "required": [
+            "enabled",
+            "name",
+            "retries"
+          ],
+          "additionalProperties": true
+        }
+      ],
+      "minItems": 3,
+      "maxItems": 3
+    }
+  },
+  "required": [
+    "mixed_payload"
+  ],
+  "additionalProperties": true
+}

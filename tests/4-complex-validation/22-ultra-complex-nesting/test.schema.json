@@ -1,0 +1,155 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "ultra_complex_structure": {
+      "type": "object",
+      "description": "A highly complex and deeply nested structure designed to test the limits of the converter.",
+      "properties": {
+        "auditors": {
+          "type": "array",
+          "items": [
+            {
+              "type": "string",
+              "minLength": 4
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "level": {
+                    "type": "number"
+                  },
+                  "username": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "level",
+                  "username"
+                ],
+                "additionalProperties": true
+              },
+              "uniqueItems": true
+            }
+          ],
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "environments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "deployment_config": {
+                "type": "array",
+                "items": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "uniqueItems": true
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "storage_size": {
+                        "type": "number",
+                        "exclusiveMinimum": 100
+                      },
+                      "storage_type": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "storage_size",
+                      "storage_type"
+                    ],
+                    "additionalProperties": true
+                  }
+                ],
+                "minItems": 4,
+                "maxItems": 4
+              },
+              "feature_flags": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "boolean"
+                }
+              },
+              "name": {
+                "type": "string",
+                "enum": [
+                  "production",
+                  "staging"
+                ]
+              }
+            },
+            "required": [
+              "deployment_config",
+              "feature_flags",
+              "name"
+            ],
+            "additionalProperties": true
+          },
+          "minItems": 1
+        },
+        "service_endpoints": {
+          "type": "object",
+          "properties": {
+            "api": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                }
+              ],
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "docs": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "string",
+                  "pattern": "^https"
+                },
+                {
+                  "type": "number"
+                }
+              ],
+              "minItems": 2,
+              "maxItems": 2
+            }
+          },
+          "required": [
+            "api",
+            "docs"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "environments",
+        "service_endpoints"
+      ],
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "ultra_complex_structure"
+  ],
+  "additionalProperties": true
+}

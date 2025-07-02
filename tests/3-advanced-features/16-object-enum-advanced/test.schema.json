@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "object_enum_advanced_var": {
+      "type": "object",
+      "properties": {
+        "config": {
+          "type": "object",
+          "properties": {
+            "setting": {
+              "type": "string",
+              "enum": [
+                "mode1",
+                "mode2"
+              ]
+            }
+          },
+          "required": [
+            "setting"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "config"
+      ],
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "object_enum_advanced_var"
+  ],
+  "additionalProperties": true
+}

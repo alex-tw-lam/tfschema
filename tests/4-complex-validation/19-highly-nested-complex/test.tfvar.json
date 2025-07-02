@@ -1,0 +1,39 @@
+{
+  "complex_config": {
+    "service_name": "my-test-service",
+    "is_enabled": true,
+    "api_version": 1,
+    "cluster_prefix": "test-cluster",
+    "instance_count": 3,
+    "availability_zones": ["us-east-1a", "us-east-1b"],
+    "user_identities": [
+      {
+        "username": "tester01",
+        "email": "tester01@example.com",
+        "access_level": 3
+      },
+      {
+        "username": "tester02",
+        "email": "tester02@example.com",
+        "access_level": 4
+      }
+    ],
+    "component_settings": {
+      "main_worker": {
+        "enabled": true,
+        "retries": 3,
+        "timeout": 20,
+        "endpoints": ["http://worker1.example.com"]
+      }
+    },
+    "security_profile": {
+      "firewall_enabled": true,
+      "allowed_ips": ["10.0.0.0/8"],
+      "ports": {
+        "http": 80,
+        "https": 443
+      }
+    },
+    "environment": "staging"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "ultra_complex_structure": {
+    "environments": [
+      {
+        "name": "production",
+        "feature_flags": {
+          "enable_new_dashboard": true,
+          "use_canary_rollouts": false
+        },
+        "deployment_config": [
+          "us-east-1",
+          5,
+          ["us-east-1a", "us-east-1b"],
+          {
+            "storage_type": "ssd",
+            "storage_size": 256
+          }
+        ]
+      }
+    ],
+    "service_endpoints": {
+      "api": ["10.1.2.3", 443],
+      "docs": ["https://docs.example.com", 443]
+    },
+    "auditors": [
+      "security_team",
+      [
+        {
+          "username": "audit_admin",
+          "level": 1
+        }
+      ]
+    ]
+  }
+}

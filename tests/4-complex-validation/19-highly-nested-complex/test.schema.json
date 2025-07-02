@@ -1,0 +1,152 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "complex_config": {
+      "type": "object",
+      "description": "A highly nested and complex configuration object.",
+      "properties": {
+        "api_version": {
+          "type": "number"
+        },
+        "availability_zones": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 2
+        },
+        "cluster_prefix": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$"
+        },
+        "component_settings": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean"
+              },
+              "endpoints": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "retries": {
+                "type": "number"
+              },
+              "timeout": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              }
+            },
+            "required": [
+              "enabled",
+              "endpoints",
+              "timeout"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "environment": {
+          "type": "string",
+          "enum": [
+            "development",
+            "staging",
+            "production"
+          ]
+        },
+        "instance_count": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 10
+        },
+        "is_enabled": {
+          "type": "boolean"
+        },
+        "security_profile": {
+          "type": "object",
+          "properties": {
+            "allowed_ips": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "firewall_enabled": {
+              "type": "boolean"
+            },
+            "ports": {
+              "type": "object",
+              "properties": {
+                "http": {
+                  "type": "number"
+                },
+                "https": {
+                  "type": "number"
+                }
+              },
+              "required": [],
+              "additionalProperties": true
+            }
+          },
+          "required": [
+            "firewall_enabled"
+          ],
+          "additionalProperties": true
+        },
+        "service_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20
+        },
+        "user_identities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "access_level": {
+                "type": "number",
+                "minimum": 1,
+                "maximum": 5
+              },
+              "email": {
+                "type": "string"
+              },
+              "username": {
+                "type": "string",
+                "pattern": "^[a-z0-9_]{3,16}$"
+              }
+            },
+            "required": [
+              "access_level",
+              "email",
+              "username"
+            ],
+            "additionalProperties": true
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "api_version",
+        "availability_zones",
+        "cluster_prefix",
+        "component_settings",
+        "environment",
+        "instance_count",
+        "is_enabled",
+        "security_profile",
+        "service_name",
+        "user_identities"
+      ],
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "complex_config"
+  ],
+  "additionalProperties": true
+}

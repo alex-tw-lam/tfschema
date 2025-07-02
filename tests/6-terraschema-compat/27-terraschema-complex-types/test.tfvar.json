@@ -1,0 +1,22 @@
+{
+  "an_object_with_optional": {
+    "a": "test",
+    "b": 42,
+    "c": false,
+    "d": "optional value"
+  },
+  "a_very_complicated_object": {
+    "a": "optional string",
+    "b": [["x", "y", "z"], false],
+    "c": {
+      "key1": ["value1a", "value1b"],
+      "key2": ["value2a"]
+    },
+    "d": {
+      "a": [["nested1", "nested2"], ["nested3"]],
+      "b": 99
+    },
+    "e": ["tuple_string", 123],
+    "f": [["set1"], ["set2"], ["set3"]]
+  }
+}

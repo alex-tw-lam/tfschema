@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "subscription_id_connectivity": {
+      "type": "string",
+      "description": "If specified, identifies the Platform subscription for \"Connectivity\" for resource deployment and correct placement in the Management Group hierarchy.",
+      "default": "",
+      "pattern": "^[a-z0-9-]{36}$"
+    }
+  },
+  "required": [],
+  "additionalProperties": true
+}
