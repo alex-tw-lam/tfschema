@@ -4,9 +4,9 @@ This directory contains comprehensive end-to-end tests for the `tfschema` conver
 
 ## Test Organization
 
-The tests are organized into 4 main categories based on complexity and feature focus:
+The tests are organized into 6 main categories based on complexity and feature focus:
 
-### 1. Basic Features (`1-basic-features/`)
+### 1. Basic Features (`1-basic-features/`) - 9 tests
 
 Core Terraform type support without validation:
 
@@ -18,8 +18,9 @@ Core Terraform type support without validation:
 - **06-map-none-basic**: Basic map variable
 - **07-bool-enum-basic**: Boolean with enum validation
 - **08-string-enum-basic**: String with enum validation
+- **23-any-type-basic**: Variable with `any` type
 
-### 2. Simple Validation (`2-simple-validation/`)
+### 2. Simple Validation (`2-simple-validation/`) - 6 tests
 
 Single validation rules applied to basic types:
 
@@ -30,22 +31,38 @@ Single validation rules applied to basic types:
 - **13-list-length-basic**: List with length constraints
 - **14-object-length-basic**: Object with property count constraints
 
-### 3. Advanced Features (`3-advanced-features/`)
+### 3. Advanced Features (`3-advanced-features/`) - 4 tests
 
 Complex type combinations and nested validation:
 
-- **15-list-enum-advanced**: List of objects with enum validation
+- **15-list-enum-advanced**: List of objects with enum validation using `alltrue`
 - **16-object-enum-advanced**: Object with nested enum validation
 - **17-map-length-advanced**: Map with length constraints
-- **18-map-enum-advanced**: Map with enum validation
+- **18-map-enum-advanced**: Map with enum validation using `alltrue`
 
-### 4. Complex Validation (`4-complex-validation/`)
+### 4. Complex Validation (`4-complex-validation/`) - 4 tests
 
 Highly nested structures with multiple validation rules:
 
-- **19-highly-nested-complex**: Multi-level object with various validation types, including `alltrue` for collection items.
+- **19-highly-nested-complex**: Multi-level object with various validation types, including `alltrue` for collection items
 - **20-set-length-basic**: Set with length constraints and uniqueness
 - **21-tuple-nested-validation-complex**: Tuple with indexed validation
+- **22-ultra-complex-nesting**: Ultra-complex nested structure with tuples, sets, and deep nesting
+
+### 5. Edge Cases (`5-edge-cases/`) - 1 test
+
+Special validation scenarios and edge cases:
+
+- **24-regex-with-or-condition**: Regex validation with OR condition (empty string allowed)
+
+### 6. Terraschema Compatibility (`6-terraschema-compat/`) - 4 tests
+
+Legacy compatibility testing with terraschema format:
+
+- **25-terraschema-simple**: Basic terraschema compatibility
+- **26-terraschema-simple-types**: All basic types including nullable
+- **27-terraschema-complex-types**: Complex nested types with optional fields
+- **28-terraschema-custom-validation**: Various validation patterns
 
 ## Test Structure
 
@@ -59,10 +76,10 @@ Each test case contains three files:
 
 ### Type Categories
 
-1. **Primitive Types**: string, number, bool
+1. **Primitive Types**: string, number, bool, any
 2. **Collection Types**: list, set, map
 3. **Structural Types**: object, tuple
-4. **Special Types**: optional (for object properties)
+4. **Special Types**: optional (for object properties), nullable
 
 ### Validation Categories
 
@@ -74,27 +91,30 @@ Each test case contains three files:
 
 ### Complexity Categories
 
-1. **None**: No validation rules
-2. **Basic**: Single validation rule
-3. **Advanced**: Multiple validation rules or nested structures
+1. **Basic**: Core type support with minimal validation
+2. **Simple**: Single validation rule on basic types
+3. **Advanced**: Multiple validation rules or nested structures with `alltrue`
 4. **Complex**: Highly nested with multiple validation types
+5. **Edge Cases**: Special scenarios and conditional validation
+6. **Terraschema**: Legacy format compatibility testing
 
 ## Testing Methodology
 
 ### Coverage Matrix
 
-The test suite uses a category partition approach to ensure comprehensive coverage:
+The test suite uses a category partition approach to ensure comprehensive coverage across 6 categories:
 
-| Type   | None | Basic                   | Advanced         | Complex |
-| ------ | ---- | ----------------------- | ---------------- | ------- |
-| string | ✓    | ✓ (length, regex, enum) | ✓                | ✓       |
-| number | ✓    | ✓ (range, enum)         | -                | ✓       |
-| bool   | ✓    | ✓ (enum)                | -                | ✓       |
-| list   | ✓    | ✓ (length)              | ✓ (enum)         | ✓       |
-| object | ✓    | ✓ (length)              | ✓ (enum)         | ✓       |
-| map    | ✓    | -                       | ✓ (length, enum) | ✓       |
-| set    | -    | ✓ (length)              | -                | ✓       |
-| tuple  | -    | -                       | -                | ✓       |
+| Type   | Basic | Simple | Advanced | Complex | Edge Cases | Terraschema |
+| ------ | ----- | ------ | -------- | ------- | ---------- | ----------- |
+| string | ✓     | ✓      | ✓        | ✓       | ✓          | ✓           |
+| number | ✓     | ✓      | -        | ✓       | -          | ✓           |
+| bool   | ✓     | -      | -        | ✓       | -          | ✓           |
+| list   | ✓     | ✓      | ✓        | ✓       | -          | ✓           |
+| object | ✓     | ✓      | ✓        | ✓       | -          | ✓           |
+| map    | ✓     | -      | ✓        | ✓       | -          | ✓           |
+| set    | -     | -      | -        | ✓       | -          | ✓           |
+| tuple  | -     | -      | -        | ✓       | -          | ✓           |
+| any    | ✓     | -      | -        | -       | -          | -           |
 
 ### Design Principles
 
@@ -105,25 +125,36 @@ The test suite uses a category partition approach to ensure comprehensive covera
 
 ### Key Test Categories
 
+#### Total Test Count: 28 tests across 6 categories
+
+1. **Basic Features** (9 tests): Core type support including `any` type
+2. **Simple Validation** (6 tests): Single validation rules on basic types
+3. **Advanced Features** (4 tests): Complex type combinations with `alltrue` validation
+4. **Complex Validation** (4 tests): Highly nested scenarios with tuple support
+5. **Edge Cases** (1 test): Special validation scenarios and regex with OR conditions
+6. **Terraschema Compatibility** (4 tests): Legacy compatibility with terraschema format
+
 #### Constraint Types
 
-- **Length**: String length, array/object size limits
-- **Range**: Numeric minimum/maximum values
-- **Pattern**: Regular expression validation
-- **Enum**: Predefined value sets
-- **Type**: Strict type checking with additionalProperties
+- **Length**: String length, array/object size limits (minLength, maxLength, minItems, maxItems)
+- **Range**: Numeric minimum/maximum values (minimum, maximum, exclusiveMinimum, exclusiveMaximum)
+- **Pattern**: Regular expression validation with `can(regex())`
+- **Enum**: Predefined value sets using `contains()` function
+- **Collection Validation**: `alltrue` with `for` expressions for array/map validation
 
 #### Nesting Levels
 
-- **Flat**: Single-level structures
-- **Nested**: 2-3 levels of nesting
-- **Complex**: 4+ levels with mixed types
+- **Flat**: Single-level structures (basic features)
+- **Nested**: 2-3 levels of nesting (advanced features)
+- **Complex**: 4+ levels with mixed types (complex validation)
+- **Ultra-Complex**: Deep nesting with tuples, sets, and multiple validation rules
 
 #### Validation Scope
 
 - **Root**: Validation on the root variable
-- **Property**: Validation on object properties
-- **Indexed**: Validation on specific array/tuple elements
+- **Property**: Validation on object properties and nested fields
+- **Indexed**: Validation on specific array/tuple elements (e.g., `var.tuple[0]`)
+- **Iterative**: Validation on all collection elements using `alltrue` and `for`
 
 ## Running Tests
 
@@ -159,17 +190,18 @@ diff <(./tfschema tests/1-basic-features/01-string-none-basic/test.tf) tests/1-b
 ### JSON Schema Draft 7 Features
 
 - **Basic Types**: string, number, boolean, object, array
-- **Validation Keywords**: minLength, maxLength, pattern, minimum, maximum, enum
-- **Object Features**: properties, required, additionalProperties
+- **Validation Keywords**: minLength, maxLength, pattern, minimum, maximum, enum, exclusiveMinimum, exclusiveMaximum
+- **Object Features**: properties, required, additionalProperties, minProperties
 - **Array Features**: items, minItems, maxItems, uniqueItems
-- **Tuple Features**: prefixItems, additionalItems (custom extension)
+- **Tuple Features**: items array with positional schemas, minItems, maxItems for exact length
 
 ### Terraform-Specific Extensions
 
-- **Sensitive Values**: Custom `sensitive` field
-- **Optional Properties**: Support for `optional()` type modifier
-- **Type Inference**: Schema generation from default values
-- **Path-Based Validation**: Support for nested property validation
+- **Optional Properties**: Support for `optional()` type modifier in object definitions
+- **Nullable Types**: Support for `nullable = true` with `anyOf` schemas
+- **Type Inference**: Schema generation from default values and type definitions
+- **Path-Based Validation**: Support for nested property validation and indexed access
+- **Complex Validation**: `alltrue` with `for` expressions for collection validation
 
 ## Test File Format
 
@@ -194,7 +226,7 @@ variable "example_var" {
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "additionalProperties": false,
+  "additionalProperties": true,
   "properties": {
     "example_var": {
       "type": "string",
@@ -202,7 +234,8 @@ variable "example_var" {
       "default": "default_value",
       "minLength": 6
     }
-  }
+  },
+  "required": []
 }
 ```
 
