@@ -6,7 +6,7 @@ A Go tool that converts Terraform variable definitions (`variable` blocks) to JS
 
 ### Core Type Support
 
-- **Primitive types**: `string`, `number`, `bool`
+- **Primitive types**: `string`, `number`, `bool`, `any`
 - **Collection types**: `list(type)`, `set(type)`, `map(type)`
 - **Structural types**: `object({ ... })`, `tuple([...])`
 - **Optional types**: `optional(type)` for object properties
@@ -23,8 +23,8 @@ A Go tool that converts Terraform variable definitions (`variable` blocks) to JS
 
 ### Schema Features
 
-- **Strict Object Schemas**: Object types use `additionalProperties: false` for precise validation
-- **Flexible Map Schemas**: Map types allow additional properties with type constraints
+- **Flexible Object Schemas**: Object types use `additionalProperties: true` by default for compatibility
+- **Type-specific Map Schemas**: Map types allow additional properties with type constraints
 - **JSON Schema Draft 7**: Full compliance with modern JSON Schema standards
 - **Comprehensive Validation**: Both Terraform and JSON Schema validation support
 
@@ -154,7 +154,7 @@ Generates:
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "additionalProperties": false,
+  "additionalProperties": true,
   "properties": {
     "app_name": {
       "type": "string",
@@ -166,7 +166,8 @@ Generates:
       "description": "Number of instances",
       "default": 3
     }
-  }
+  },
+  "required": []
 }
 ```
 
@@ -200,11 +201,11 @@ Generates:
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "additionalProperties": false,
+  "additionalProperties": true,
   "properties": {
     "server_config": {
       "type": "object",
-      "additionalProperties": false,
+      "additionalProperties": true,
       "properties": {
         "name": {
           "type": "string",
@@ -288,12 +289,12 @@ This generates a schema that applies the validation rules to each item in the `u
           }
         },
         "required": ["username", "level"],
-        "additionalProperties": false
+        "additionalProperties": true
       }
     }
   },
   "required": ["user_profiles"],
-  "additionalProperties": false
+  "additionalProperties": true
 }
 ```
 
@@ -330,11 +331,11 @@ Generates:
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "additionalProperties": false,
+  "additionalProperties": true,
   "properties": {
     "mixed_payload": {
       "type": "array",
-      "prefixItems": [
+      "items": [
         {
           "type": "string",
           "minLength": 36,
@@ -347,7 +348,7 @@ Generates:
         },
         {
           "type": "object",
-          "additionalProperties": false,
+          "additionalProperties": true,
           "properties": {
             "name": { "type": "string" },
             "enabled": { "type": "boolean" },
@@ -361,8 +362,7 @@ Generates:
         }
       ],
       "minItems": 3,
-      "maxItems": 3,
-      "additionalItems": false
+      "maxItems": 3
     }
   },
   "required": ["mixed_payload"]
@@ -373,7 +373,7 @@ Generates:
 
 ### Types
 
-- ✅ `string`, `number`, `bool`
+- ✅ `string`, `number`, `bool`, `any`
 - ✅ `list(type)`, `set(type)`, `map(type)`
 - ✅ `object({ field = type, ... })`
 - ✅ `tuple([type1, type2, ...])`
@@ -412,7 +412,7 @@ go test -v ./tests
 
 ### Test Categories
 
-1. **Basic Features** (8 tests): Core type support
+1. **Basic Features** (9 tests): Core type support including `any` type
 2. **Simple Validation** (6 tests): Basic validation rules
 3. **Advanced Features** (4 tests): Complex type combinations
 4. **Complex Validation** (4 tests): Highly nested scenarios with tuple support
