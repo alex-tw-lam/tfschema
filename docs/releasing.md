@@ -10,15 +10,21 @@ This project follows [Semantic Versioning](https://semver.org/). All release tag
 
 1.  **Finalize Changes**: Ensure that all changes for the release are merged into the `main` branch.
 
-2.  **Determine the Version Number**: Based on the changes since the last release, determine the next version number.
+2.  **Update Dependencies**: If any dependencies have changed, update the `vendor` directory.
 
-3.  **Create an Annotated Tag**: Create a new annotated git tag for the release.
+    ```bash
+    go mod vendor
+    ```
+
+3.  **Determine the Version Number**: Based on the changes since the last release, determine the next version number.
+
+4.  **Create an Annotated Tag**: Create a new annotated git tag for the release.
 
     ```bash
     git tag -a vX.Y.Z -m "Release vX.Y.Z"
     ```
 
-4.  **Push the Tag**: Push the new tag to the remote repository.
+5.  **Push the Tag**: Push the new tag to the remote repository.
 
     ```bash
     git push origin vX.Y.Z
@@ -28,10 +34,10 @@ This project follows [Semantic Versioning](https://semver.org/). All release tag
 
 ## Building with Version Information
 
-The `tfschema` command-line tool includes a `-version` flag to display the current version. To build the binary with the correct version information, use the `-ldflags` option:
+The `tfschema` command-line tool includes a `-version` flag to display the current version. To build the binary with the correct version information, use the `-ldflags` option and the `-mod=vendor` flag to build from the `vendor` directory:
 
 ```bash
-go build -ldflags="-X main.version=vX.Y.Z" ./cmd/tfschema
+go build -ldflags="-X main.version=vX.Y.Z" -mod=vendor ./cmd/tfschema
 ```
 
 When you run the built binary with the `-version` flag, it will display the version you specified:
