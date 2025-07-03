@@ -56,78 +56,106 @@ For complete details, see [docs/architecture.md](./docs/architecture.md).
 
 ## Installation
 
+To install the `tfschema` command-line tool, you can use `go install`:
+
 ```bash
-go install github.com/atwlam/tfschema/cmd/tfschema@latest
+go install github.com/alex-tw-lam/tfschema/cmd/tfschema@latest
 ```
 
 Or build from source:
 
 ```bash
-git clone https://github.com/atwlam/tfschema.git
+git clone https://github.com/alex-tw-lam/tfschema.git
 cd tfschema
 go build -o tfschema ./cmd/tfschema
 ```
 
 ## Usage
 
-### Command Line
+The `tfschema` command-line tool takes a JSON schema file as input and generates a Terraform provider schema file as output.
 
 ```bash
-# Convert a Terraform file to JSON Schema
-tfschema variables.tf > schema.json
-
-# Validate a tfvars.json file against the schema
-# First install a JSON Schema validator like ajv-cli:
-npm install -g ajv-cli
-
-# Then validate
-ajv validate -s schema.json -d terraform.tfvars.json
+tfschema <input.json> <output.tf>
 ```
 
-### Programmatic Usage
+### Go API
+
+In addition to the command-line tool, `tfschema` can also be used as a Go library. This is useful if you want to integrate `tfschema` into your own Go applications.
 
 ```go
 package main
 
 import (
-	"fmt"
-	"github.com/atwlam/tfschema/internal/converter"
+    "fmt"
+    "os"
+    "github.com/alex-tw-lam/tfschema/internal/converter"
 )
 
 func main() {
-	c := converter.New()
-	schema, err := c.ConvertFile("variables.tf")
-	if err != nil {
-		panic(err)
-	}
-
-	// Use the schema for validation or documentation
-	fmt.Printf("%s\n", schema)
-}
-```
-
-### Using the Extension System
-
-```go
-package main
-
-import (
-    "github.com/atwlam/tfschema/internal/converter"
-    _ "github.com/atwlam/tfschema/internal/extensions/examples" // Load extensions
-)
-
-func main() {
-    // Create a new converter instance
-    c := converter.New()
-    schema, err := c.ConvertFile("variables.tf")
+    // Read the JSON schema from a file
+    schemaData, err := os.ReadFile("path/to/your/schema.json")
     if err != nil {
-        log.Fatal(err)
+        panic(err)
     }
 
-    // Output the schema as JSON
-    output, _ := json.MarshalIndent(schema, "", "  ")
-    fmt.Println(string(output))
+    // Convert the JSON schema to a Terraform schema
+    terraformSchema, err := converter.Convert(schemaData)
+    if err != nil {
+        panic(err)
+    }
+
+    fmt.Println(string(terraformSchema))
 }
+```
+
+## Extensions
+
+`tfschema` supports extensions for custom type converters and validation rules. This allows you to extend the functionality of `tfschema` to support your own custom types and validation logic.
+
+To use an extension, you need to import the extension package in your Go code. For example:
+
+```go
+package main
+
+import (
+    "fmt"
+    "os"
+    "github.com/alex-tw-lam/tfschema/internal/converter"
+    _ "github.com/alex-tw-lam/tfschema/internal/extensions/examples" // Load extensions
+)
+
+func main() {
+    // ...
+}
+```
+
+In this example, we are importing the `examples` package, which contains some example extensions. By importing this package, the extensions will be automatically registered and available for use.
+
+To create your own extension, you will need to create a new Go package and implement the `TypeConverter` or `ValidationRule` interface. You can then register your extension in an `init()` function.
+
+```go
+package myextension
+
+import (
+    "github.com/alex-tw-lam/tfschema/internal/converter"
+    _ "github.com/alex-tw-lam/tfschema/internal/extensions/examples" // Load extensions
+)
+
+func init() {
+    // Register your custom type converter or validation rule here
+}
+```
+
+You can then import your extension package in your application to make it available.
+
+For more information on creating extensions, see the [Architecture](./docs/architecture.md) documentation.
+
+## Testing
+
+To run the tests, use the `go test` command:
+
+```bash
+go test ./...
 ```
 
 ## Examples

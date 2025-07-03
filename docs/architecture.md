@@ -249,8 +249,8 @@ Create `internal/extensions/examples/url_validation.go`:
 package examples
 
 import (
-    "github.com/atwlam/tfschema/internal/extensions"
-    "github.com/atwlam/tfschema/internal/validation"
+    "github.com/alex-tw-lam/tfschema/internal/extensions"
+    "github.com/alex-tw-lam/tfschema/internal/validation"
     // ... other imports
 )
 
