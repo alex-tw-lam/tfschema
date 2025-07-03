@@ -1,4 +1,4 @@
-module github.com/atwlam/tfschema
+module github.com/alex-tw-lam/tfschema
 
 go 1.22
 
