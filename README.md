@@ -452,3 +452,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 6. Submit a pull request
 
 For architectural guidance, see [docs/architecture.md](./docs/architecture.md).
+
+For examples of how to use `tfschema`, see the `examples` directory.
+
+Contributions are welcome! Please see the [Contributing Guidelines](./CONTRIBUTING.md) for more information.
+
+For details on the release process, see the [Releasing Guidelines](./docs/releasing.md).

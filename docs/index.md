@@ -134,6 +134,8 @@ func main() {
 
 For more information on creating extensions, see the [Architecture](./architecture.md) documentation.
 
+For details on the release process, see the [Releasing Guidelines](./releasing.md).
+
 ## Examples
 
 ### Basic Types
