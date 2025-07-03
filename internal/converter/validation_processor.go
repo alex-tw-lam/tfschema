@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/atwlam/tfschema/internal/jsonschema"
-	"github.com/atwlam/tfschema/internal/validation"
+	"github.com/alex-tw-lam/tfschema/internal/jsonschema"
+	"github.com/alex-tw-lam/tfschema/internal/validation"
 	"github.com/hashicorp/hcl/v2"
 )
 

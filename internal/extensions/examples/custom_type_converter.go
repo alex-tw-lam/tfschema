@@ -5,8 +5,8 @@ package examples
 import (
 	"fmt"
 
-	"github.com/atwlam/tfschema/internal/extensions"
-	"github.com/atwlam/tfschema/internal/jsonschema"
+	"github.com/alex-tw-lam/tfschema/internal/extensions"
+	"github.com/alex-tw-lam/tfschema/internal/jsonschema"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/hclsyntax"
 )

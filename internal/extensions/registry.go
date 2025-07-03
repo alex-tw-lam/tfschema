@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/atwlam/tfschema/internal/converter/types"
-	"github.com/atwlam/tfschema/internal/validation"
+	"github.com/alex-tw-lam/tfschema/internal/converter/types"
+	"github.com/alex-tw-lam/tfschema/internal/validation"
 )
 
 // ExtensionRegistry manages all extension points in tfschema

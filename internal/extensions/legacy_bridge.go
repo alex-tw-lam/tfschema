@@ -2,9 +2,9 @@
 package extensions
 
 import (
-	"github.com/atwlam/tfschema/internal/converter/types"
-	"github.com/atwlam/tfschema/internal/jsonschema"
-	"github.com/atwlam/tfschema/internal/validation"
+	"github.com/alex-tw-lam/tfschema/internal/converter/types"
+	"github.com/alex-tw-lam/tfschema/internal/jsonschema"
+	"github.com/alex-tw-lam/tfschema/internal/validation"
 	"github.com/hashicorp/hcl/v2"
 )
 

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/atwlam/tfschema/internal/converter/types"
-	"github.com/atwlam/tfschema/internal/jsonschema"
+	"github.com/alex-tw-lam/tfschema/internal/converter/types"
+	"github.com/alex-tw-lam/tfschema/internal/jsonschema"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/hclparse"
 	"github.com/hashicorp/hcl/v2/hclsyntax"

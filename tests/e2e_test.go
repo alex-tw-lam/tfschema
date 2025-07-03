@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/atwlam/tfschema/internal/converter"
+	"github.com/alex-tw-lam/tfschema/internal/converter"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -77,7 +77,7 @@ func discoverTestCases(rootDir string) ([]TestCase, error) {
 	return testCases, err
 }
 
-func runTest(t *testing.T, testDir string) error {
+func runTest(_ *testing.T, _ string) error {
 	// ... existing code ...
 	return nil
 }

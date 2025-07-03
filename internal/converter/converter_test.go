@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/atwlam/tfschema/internal/jsonschema"
+	"github.com/alex-tw-lam/tfschema/internal/jsonschema"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

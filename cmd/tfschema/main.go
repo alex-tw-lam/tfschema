@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/atwlam/tfschema/internal/converter"
+	"github.com/alex-tw-lam/tfschema/internal/converter"
 )
 
 func main() {

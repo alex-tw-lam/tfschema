@@ -3,7 +3,7 @@ package converter
 import (
 	"fmt"
 
-	"github.com/atwlam/tfschema/internal/jsonschema"
+	"github.com/alex-tw-lam/tfschema/internal/jsonschema"
 	"github.com/hashicorp/hcl/v2"
 )
 
