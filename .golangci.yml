@@ -15,7 +15,4 @@ linters:
     gocyclo:
       min-complexity: 30 # hard gate; current max is 26
 
-issues:
-  # Vendor is vendored third-party code; don't lint it.
-  exclude-dirs:
-    - vendor
+# Note: vendor/ is excluded from linting by golangci-lint's defaults.
