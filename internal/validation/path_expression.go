@@ -114,26 +114,3 @@ func (p *PathExpressionHandler) extractComplexPath(traversers []hcl.Traverser) [
 
 	return path
 }
-
-// IsIndexedPath checks if a path contains array indexing
-func (p *PathExpressionHandler) IsIndexedPath(path []string) bool {
-	for _, segment := range path {
-		if len(segment) > 3 && segment[len(segment)-3:] == "[*]" {
-			return true
-		}
-	}
-	return false
-}
-
-// GetBasePath removes indexing markers from a path
-func (p *PathExpressionHandler) GetBasePath(path []string) []string {
-	var basePath []string
-	for _, segment := range path {
-		if len(segment) > 3 && segment[len(segment)-3:] == "[*]" {
-			basePath = append(basePath, segment[:len(segment)-3])
-		} else {
-			basePath = append(basePath, segment)
-		}
-	}
-	return basePath
-}

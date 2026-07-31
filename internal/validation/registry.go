@@ -22,11 +22,6 @@ type prioritizedParser struct {
 // Global registry for validation rule parsers
 var parsers []prioritizedParser
 
-// RegisterRuleParser registers a validation rule parser with default priority 0.
-func RegisterRuleParser(parser ParserFunc) {
-	RegisterRuleParserWithName("", parser, 0)
-}
-
 // RegisterRuleParserWithPriority registers a validation rule parser with a specific priority.
 // Higher priority parsers are executed first.
 func RegisterRuleParserWithPriority(parser ParserFunc, priority int) {
