@@ -29,7 +29,7 @@ func New() *Converter {
 		defaultParser:       defaultParser,
 		validationProcessor: NewValidationProcessor(),
 	}
-	c.typeInferenceHandler = NewTypeInferenceHandler(c.defaultParser, c)
+	c.typeInferenceHandler = NewTypeInferenceHandler()
 
 	// Initialize components
 	c.initializeAttributeProcessor(defaultParser)
@@ -201,8 +201,9 @@ func (c *Converter) convertVariableBlock(block *hcl.Block, content *hcl.BodyCont
 		return nil, err
 	}
 
-	// Infer type from default value if not explicitly set
-	if schema.Type == "" && !isAnyType {
+	// Infer type from default value if not explicitly set. schema.Type is an
+	// interface; an unset type is nil (not ""), so compare against nil.
+	if schema.Type == nil && !isAnyType {
 		if defaultValue, exists := c.parseDefault(content.Attributes); exists {
 			schema = c.typeInferenceHandler.InferSchemaFromDefault(schema, defaultValue)
 		}
