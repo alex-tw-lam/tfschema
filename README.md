@@ -28,32 +28,6 @@ A Go tool that converts Terraform variable definitions (`variable` blocks) to JS
 - **JSON Schema Draft 7**: Full compliance with modern JSON Schema standards
 - **Comprehensive Validation**: Both Terraform and JSON Schema validation support
 
-## Extensible Architecture
-
-`tfschema` follows a **plugin-based, extensible architecture** that enables adding new features without modifying existing code. The "new file" principle allows developers to extend functionality by simply creating new files.
-
-### Key Architecture Features
-
-- **Extension Registry System**: Centralized plugin coordination
-- **Type Converter Plugins**: Add support for new Terraform types
-- **Validation Rule Plugins**: Implement custom validation logic
-- **Pre/Post Processors**: Transform schemas during conversion
-- **Legacy Compatibility**: Seamless integration with existing code
-
-### Adding Extensions
-
-Create new files to add functionality:
-
-```go
-// File: internal/extensions/examples/my_feature.go
-func init() {
-    extensions.RegisterLegacyTypeConverter("mytype", &MyTypeConverter{})
-    extensions.RegisterLegacyValidationRule(parseMyValidationRule)
-}
-```
-
-For complete details, see [docs/architecture.md](./docs/architecture.md).
-
 ## Installation
 
 To install the `tfschema` command-line tool, you can use `go install`:
@@ -106,38 +80,6 @@ func main() {
 	// Use the schema for validation or documentation
 	fmt.Printf("%s\n", schema)
 }
-```
-
-### Using the Extension System
-
-```go
-package main
-
-import (
-    "github.com/alex-tw-lam/tfschema/internal/converter"
-    _ "github.com/alex-tw-lam/tfschema/internal/extensions/examples" // Load extensions
-)
-
-func main() {
-    // Create a new converter instance
-    c := converter.New()
-    schema, err := c.ConvertFile("variables.tf")
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    // Output the schema as JSON
-    output, _ := json.MarshalIndent(schema, "", "  ")
-    fmt.Println(string(output))
-}
-```
-
-## Testing
-
-To run the tests, use the `go test` command:
-
-```bash
-go test ./...
 ```
 
 ## Examples
@@ -433,10 +375,8 @@ For detailed testing documentation, see [docs/testing.md](./docs/testing.md).
 
 ## Documentation
 
-- **[Architecture Guide](./docs/architecture.md)** - Complete guide to the extensible architecture
-- **[Testing Documentation](./docs/testing.md)** - Comprehensive testing methodology
-- **[API Documentation](./docs/index.md)** - Full API and usage documentation
-- **[Extension Examples](./internal/extensions/examples/)** - Sample implementations
+- **[Architecture](./docs/architecture.md)** - How the conversion pipeline works
+- **[Testing](./docs/testing.md)** - Test suite and methodology
 
 ## License
 
@@ -445,16 +385,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Contributing
 
 1. Fork the repository
-2. Create your feature branch following the "new file" principle
-3. Add comprehensive tests for new functionality
-4. Ensure all existing tests pass: `go test -v ./...`
+2. Create your feature branch
+3. Add tests for new functionality
+4. Ensure all tests pass: `go test ./...`
 5. Update documentation as needed
 6. Submit a pull request
-
-For architectural guidance, see [docs/architecture.md](./docs/architecture.md).
-
-For examples of how to use `tfschema`, see the `examples` directory.
-
-Contributions are welcome! Please see the [Contributing Guidelines](./CONTRIBUTING.md) for more information.
 
 For details on the release process, see the [Releasing Guidelines](./docs/releasing.md).

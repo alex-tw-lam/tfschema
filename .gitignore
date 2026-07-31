@@ -31,4 +31,7 @@ go.work.sum
 # .idea/
 # .vscode/
 
+# Local agent/tooling state
+.zcode/
+
 tfschema
