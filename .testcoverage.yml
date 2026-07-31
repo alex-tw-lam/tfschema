@@ -1,0 +1,9 @@
+# go-test-coverage (https://github.com/vladopajic/go-test-coverage) configuration.
+# Enforces a coverage floor against the combined profile produced by
+# `go test -coverprofile=cover.out -coverpkg=./... ./...`.
+profile: cover.out
+
+threshold:
+  # Combined cross-package coverage is currently 64%; set a floor of 60% so the
+  # build fails on regressions while leaving room to raise it over time.
+  total: 60

@@ -1,0 +1,21 @@
+version: "2"
+
+run:
+  tests: true
+  modules-download-mode: vendor
+
+linters:
+  # Enable the standard default set, plus gocyclo for cyclomatic complexity and
+  # gosec for Go static security analysis (SAST).
+  default: standard
+  enable:
+    - gocyclo
+    - gosec
+  settings:
+    gocyclo:
+      min-complexity: 30 # hard gate; current max is 26
+
+issues:
+  # Vendor is vendored third-party code; don't lint it.
+  exclude-dirs:
+    - vendor
