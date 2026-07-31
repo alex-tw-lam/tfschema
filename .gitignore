@@ -34,4 +34,4 @@ go.work.sum
 # Local agent/tooling state
 .zcode/
 
-tfschema
+/tfschema

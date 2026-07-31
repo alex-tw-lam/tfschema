@@ -14,5 +14,12 @@ linters:
   settings:
     gocyclo:
       min-complexity: 30 # hard gate; current max is 26
+  exclusions:
+    rules:
+      # G204 (subprocess launched with variable) is expected when tests spawn
+      # the built CLI binary; suppress it in test files only.
+      - path: _test\.go
+        linters: [gosec]
+        text: "G204"
 
 # Note: vendor/ is excluded from linting by golangci-lint's defaults.
