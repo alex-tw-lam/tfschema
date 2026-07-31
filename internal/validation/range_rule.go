@@ -2,7 +2,6 @@ package validation
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/alex-tw-lam/tfschema/internal/jsonschema"
 	"github.com/hashicorp/hcl/v2"
@@ -45,16 +44,13 @@ func (r *RangeRule) Apply(schema *jsonschema.Schema) error {
 
 func parseRangeRule(expr hcl.Expression, varName string) (Rule, []string, error) {
 	expr = unwrapParen(expr)
-	log.Printf("[range] called var=%s, expr=%T", varName, expr)
 	binaryExpr, ok := expr.(*hclsyntax.BinaryOpExpr)
 	if !ok {
 		return nil, nil, nil // Not a binary operation.
 	}
-	log.Printf("[range] op=%v", binaryExpr.Op)
 
 	// Check if this is a range comparison
 	if !isRangeOperationForVar(binaryExpr, varName) {
-		log.Printf("[range] isRangeOperation=false for var=%s", varName)
 		return nil, nil, nil // Not a range operation.
 	}
 
@@ -105,7 +101,6 @@ func parseRangeRule(expr hcl.Expression, varName string) (Rule, []string, error)
 		rule = singleRule
 	}
 
-	log.Printf("[range] result rule=%#v path=%v", rule, path)
 	return rule, path, nil
 }
 
