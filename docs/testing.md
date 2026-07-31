@@ -74,6 +74,36 @@ Each test case contains three files:
 
 ## Category Partition Analysis
 
+The test suite is seeded by a pairwise (category-partition) model defined in
+`tests/model.pict` and generated into `tests/test-spec.csv` with
+[PICT](https://github.com/microsoft/pict). Each row of the spec describes the
+*shape* of a variable under test; the generated covering array guarantees
+that every pair of factor values is exercised at least once.
+
+### Factors
+
+| Factor | Values | Meaning |
+| ------ | ------ | ------- |
+| `TYPE` | string, number, bool, list, set, map, object, tuple, any | outermost type of the variable |
+| `ELEMENT` | primitive, object, list, map, set, tuple, na | immediate child type (collection element / object property); `na` = primitive leaf |
+| `DEPTH` | 1, 2, 3, 4 | total nesting depth (`DEPTH > 1` requires a composite element so the structure can actually nest) |
+| `VALIDATION` | none, length, range, enum, regex, indexed, iterative | validation kind |
+
+The `ELEMENT` and `DEPTH` factors make deeply nested shapes first-class
+categories rather than ad-hoc extras. For example, a "list of dict of list of
+dict" is expressed as `TYPE=list, ELEMENT=object, DEPTH=4`.
+
+Two validation kinds are made explicit that were previously implicit:
+
+- **indexed** — positional access into an ordered container, e.g.
+  `var.tuple[0].field` (requires `tuple` or `list`).
+- **iterative** — element-wise validation over a collection, e.g.
+  `alltrue([for x in var.coll : ...])` (requires a collection type).
+
+The model carries constraints that keep combinations sensible (e.g. `range`
+implies `number`; a primitive element forces `DEPTH=1`). See `tests/model.pict`
+for the full constraint set.
+
 ### Type Categories
 
 1. **Primitive Types**: string, number, bool, any
@@ -88,6 +118,8 @@ Each test case contains three files:
 3. **Pattern Constraints**: regex patterns (for strings)
 4. **Enum Constraints**: predefined value lists
 5. **Property Constraints**: minProperties, maxProperties (for objects)
+6. **Indexed**: positional access (`var.x[i]`) into tuple/list elements
+7. **Iterative**: `alltrue`/`for` validation over collection elements
 
 ### Complexity Categories
 
@@ -144,10 +176,20 @@ The test suite uses a category partition approach to ensure comprehensive covera
 
 #### Nesting Levels
 
-- **Flat**: Single-level structures (basic features)
-- **Nested**: 2-3 levels of nesting (advanced features)
-- **Complex**: 4+ levels with mixed types (complex validation)
-- **Ultra-Complex**: Deep nesting with tuples, sets, and multiple validation rules
+Nesting depth is encoded directly by the `DEPTH` factor in `tests/model.pict`
+(see Category Partition Analysis above):
+
+- **Flat (DEPTH 1)**: single-level structures (basic features)
+- **Nested (DEPTH 2-3)**: 2-3 levels of nesting (advanced features)
+- **Complex (DEPTH 4)**: 4+ levels with mixed types, e.g. `list(object({... = list(object({...}))}))`
+- **Ultra-Complex**: deep nesting with tuples, sets, and multiple validation rules
+
+> **Note (coverage gap):** the current fixtures (tests 01-28) cover the
+> breadth of `TYPE × VALIDATION`, but most `DEPTH >= 3` rows in
+> `test-spec.csv` do not yet have matching fixture directories. Building
+> these — especially `list,object,4,iterative` (nested `alltrue` over a
+> list-of-dict-of-list-of-dict) and multi-level wildcard navigation in
+> `validation_processor.findTargetSchema` — is a tracked follow-up.
 
 #### Validation Scope
 
@@ -255,6 +297,21 @@ variable "example_var" {
 2. Add three required files: `test.tf`, `test.schema.json`, `test.tfvar.json`
 3. Update this README if introducing new categories
 4. Run tests to ensure compatibility
+
+### Regenerating the Test Spec
+
+The category-partition covering array in `tests/test-spec.csv` is generated
+from `tests/model.pict` with PICT (Microsoft Pairwise Independent
+Combinatorial Testing). To regenerate after editing the model:
+
+```bash
+pict tests/model.pict | tr '\t' ',' > tests/test-spec.csv   # PICT emits TSV; convert to CSV
+```
+
+Note that `test-spec.csv` is a planning artifact: the end-to-end tests in
+`tests/e2e_test.go` discover fixtures by walking directories, so adding a row
+to the spec does not create a test by itself — a matching fixture directory
+must also be added for the row to be exercised.
 
 ### Updating Expected Outputs
 

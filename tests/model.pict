@@ -1,14 +1,56 @@
-# Minimal Model - Essential Factors Only
-TYPE:       string, number, bool, list, object, map
-VALIDATION: none, length, range, enum, regex
-FEATURES:   basic, advanced
+# tfschema Category-Partition Model
+#
+# Factors describe the SHAPE of a variable under test, not a specific
+# fixture. Pairwise generation (PICT) produces a covering array so that
+# every pair of factor values is exercised at least once. The generated
+# covering array is written to test-spec.csv.
+#
+# Factors:
+#   TYPE       outermost type of the variable under test
+#   ELEMENT    immediate child type: the element of a collection, or the
+#              property type of an object/tuple. "na" = not applicable
+#              (primitive leaf, nothing to nest into).
+#   DEPTH      total nesting depth (1 = flat). DEPTH > 1 is only valid
+#              when ELEMENT is itself composite, otherwise the structure
+#              could not actually nest (see constraints below).
+#   VALIDATION kind of validation rule under test.
+#
+# The ELEMENT + DEPTH factors are what make deeply nested shapes such as
+# list(object({ ... = list(object({ ... })) })) first-class categories
+# instead of ad-hoc extras. For example, a "list of dict of list of dict"
+# (DEPTH 4) is expressed as: TYPE=list, ELEMENT=object, DEPTH=4.
+#
+# VALIDATION introduces two kinds that were previously implicit:
+#   indexed    positional access into an ordered container, e.g.
+#              var.tuple[0].field  (requires tuple or list)
+#   iterative  element-wise validation over a collection using
+#              alltrue([for x in var.coll : ...])  (requires a collection)
+
+TYPE:       string, number, bool, list, set, map, object, tuple, any
+ELEMENT:    primitive, object, list, map, set, tuple, na
+DEPTH:      1, 2, 3, 4
+VALIDATION: none, length, range, enum, regex, indexed, iterative
 
 # --- CONSTRAINTS ---
 
-# Rule 1: Type-specific validation rules
+# Primitives and `any` carry no element and cannot nest.
+IF [TYPE] IN {"string", "number", "bool", "any"} THEN [ELEMENT] = "na";
+IF [TYPE] IN {"string", "number", "bool", "any"} THEN [DEPTH] = 1;
+
+# What a collection / structural type may contain as its immediate child.
+IF [TYPE] IN {"list", "set"} THEN [ELEMENT] IN {"primitive", "object", "list", "map", "set", "tuple"};
+IF [TYPE] = "map" THEN [ELEMENT] IN {"primitive", "object", "list", "map"};
+IF [TYPE] = "object" THEN [ELEMENT] IN {"primitive", "object", "list", "map", "set", "tuple"};
+IF [TYPE] = "tuple" THEN [ELEMENT] IN {"primitive", "object", "list", "tuple"};
+
+# Depth > 1 only makes sense when the child type is itself composite.
+IF [ELEMENT] IN {"primitive", "na"} THEN [DEPTH] = 1;
+
+# Validation kinds are type-specific.
 IF [VALIDATION] = "range" THEN [TYPE] = "number";
 IF [VALIDATION] = "regex" THEN [TYPE] = "string";
-IF [VALIDATION] = "length" THEN [TYPE] IN {"string", "list", "object", "map"};
-
-# Rule 2: Advanced features only for composite types
-IF [FEATURES] = "advanced" THEN [TYPE] IN {"list", "object", "map"}; 
+IF [VALIDATION] = "length" THEN [TYPE] IN {"string", "list", "object", "map", "set"};
+# Indexed access (var.x[i]) needs a positional / ordered container.
+IF [VALIDATION] = "indexed" THEN [TYPE] IN {"tuple", "list"};
+# Iterative validation (alltrue/for) iterates a collection's elements.
+IF [VALIDATION] = "iterative" THEN [TYPE] IN {"list", "set", "map", "object"};
