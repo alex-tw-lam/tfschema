@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "config": {
+      "type": "object",
+      "default": {
+        "enabled": true,
+        "name": "app",
+        "port": 8080
+      },
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "port": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "enabled",
+        "name",
+        "port"
+      ]
+    }
+  },
+  "required": [],
+  "additionalProperties": true
+}

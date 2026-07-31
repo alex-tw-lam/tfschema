@@ -29,7 +29,7 @@ func New() *Converter {
 		defaultParser:       defaultParser,
 		validationProcessor: NewValidationProcessor(),
 	}
-	c.typeInferenceHandler = NewTypeInferenceHandler(c.defaultParser, c)
+	c.typeInferenceHandler = NewTypeInferenceHandler()
 
 	// Initialize components
 	c.initializeAttributeProcessor(defaultParser)
@@ -187,10 +187,9 @@ func (c *Converter) convertVariableBlock(block *hcl.Block, content *hcl.BodyCont
 		if err != nil {
 			return nil, fmt.Errorf("failed to convert type: %w", err)
 		}
-	} else {
-		// If no type is specified, it defaults to `any` which we can treat as an empty schema
-		// waiting for type inference from the default value later.
 	}
+	// When no type is specified the variable defaults to `any`; schema stays empty
+	// and type inference fills it in from the default value below.
 
 	// Apply all variable attributes (description, default, sensitive, nullable etc.)
 	if err := c.attributeProcessor.ApplyAttributes(schema, content.Attributes); err != nil {
@@ -202,8 +201,9 @@ func (c *Converter) convertVariableBlock(block *hcl.Block, content *hcl.BodyCont
 		return nil, err
 	}
 
-	// Infer type from default value if not explicitly set
-	if schema.Type == "" && !isAnyType {
+	// Infer type from default value if not explicitly set. schema.Type is an
+	// interface; an unset type is nil (not ""), so compare against nil.
+	if schema.Type == nil && !isAnyType {
 		if defaultValue, exists := c.parseDefault(content.Attributes); exists {
 			schema = c.typeInferenceHandler.InferSchemaFromDefault(schema, defaultValue)
 		}

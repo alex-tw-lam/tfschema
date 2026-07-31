@@ -5,34 +5,9 @@ import (
 
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/hclparse"
-	"github.com/hashicorp/hcl/v2/hclsyntax"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
-
-func TestRegexRuleVisitorImplementsWalker(t *testing.T) {
-	var _ hclsyntax.Walker = (*regexRuleVisitor)(nil)
-}
-
-func TestRegexRuleVisitorHandlesNodes(t *testing.T) {
-	visitor := &regexRuleVisitor{}
-
-	// Test with a FunctionCallExpr
-	funcCallNode := &hclsyntax.FunctionCallExpr{
-		Name: "can",
-	}
-	diags := visitor.Enter(funcCallNode)
-	if diags.HasErrors() {
-		t.Errorf("Enter() with FunctionCallExpr returned unexpected error: %v", diags)
-	}
-
-	// Test with a different node to ensure it's gracefully ignored
-	otherNode := &hclsyntax.LiteralValueExpr{}
-	diags = visitor.Enter(otherNode)
-	if diags.HasErrors() {
-		t.Errorf("Enter() with LiteralValueExpr returned unexpected error: %v", diags)
-	}
-}
 
 func TestParseRegexRuleWithVisitor(t *testing.T) {
 	parser := hclparse.NewParser()

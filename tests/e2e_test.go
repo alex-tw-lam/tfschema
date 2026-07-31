@@ -2,7 +2,6 @@ package tests
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"testing"
@@ -26,7 +25,7 @@ func TestEndToEnd(t *testing.T) {
 			require.NoError(t, err, "Failed to convert Terraform file")
 
 			// Load expected JSON schema
-			expectedJSON, err := ioutil.ReadFile(tc.SchemaFile)
+			expectedJSON, err := os.ReadFile(tc.SchemaFile)
 			require.NoError(t, err, "Failed to read expected schema file")
 
 			var expectedSchema map[string]interface{}
