@@ -104,20 +104,6 @@ func parseRangeRule(expr hcl.Expression, varName string) (Rule, []string, error)
 	return rule, path, nil
 }
 
-func isRangeOperation(expr *hclsyntax.BinaryOpExpr) bool {
-	switch expr.Op {
-	case hclsyntax.OpLogicalAnd, hclsyntax.OpLogicalOr:
-		// For logical operations, check if it contains direct variable comparisons (not function calls)
-		return hasDirectVariableComparison(expr)
-	case hclsyntax.OpGreaterThan, hclsyntax.OpGreaterThanOrEqual,
-		hclsyntax.OpLessThan, hclsyntax.OpLessThanOrEqual,
-		hclsyntax.OpEqual:
-		// For comparison operations, check if it has direct variable references
-		return hasDirectVariableReference(expr)
-	}
-	return false
-}
-
 func isRangeOperationForVar(expr *hclsyntax.BinaryOpExpr, varName string) bool {
 	switch expr.Op {
 	case hclsyntax.OpLogicalAnd, hclsyntax.OpLogicalOr:
@@ -132,37 +118,10 @@ func isRangeOperationForVar(expr *hclsyntax.BinaryOpExpr, varName string) bool {
 	return false
 }
 
-func hasDirectVariableComparison(expr *hclsyntax.BinaryOpExpr) bool {
-	// Check if this is a compound expression with direct variable comparisons
-	// (not function calls like length())
-	return hasDirectVariableComparisonRecursive(expr.LHS) || hasDirectVariableComparisonRecursive(expr.RHS)
-}
-
 func hasDirectVariableComparisonForVar(expr *hclsyntax.BinaryOpExpr, varName string) bool {
 	// Check if this is a compound expression with direct variable comparisons
 	// (not function calls like length())
 	return hasDirectVariableComparisonRecursiveForVar(expr.LHS, varName) || hasDirectVariableComparisonRecursiveForVar(expr.RHS, varName)
-}
-
-func hasDirectVariableComparisonRecursive(expr hcl.Expression) bool {
-	if paren, ok := expr.(*hclsyntax.ParenthesesExpr); ok {
-		return hasDirectVariableComparisonRecursive(paren.Expression)
-	}
-	if binaryExpr, ok := expr.(*hclsyntax.BinaryOpExpr); ok {
-		switch binaryExpr.Op {
-		case hclsyntax.OpGreaterThan, hclsyntax.OpGreaterThanOrEqual,
-			hclsyntax.OpLessThan, hclsyntax.OpLessThanOrEqual,
-			hclsyntax.OpEqual:
-			// Check if this is a direct variable comparison (not a function call)
-			return (isVariableReference(binaryExpr.LHS) && !isFunctionCall(binaryExpr.LHS)) ||
-				(isVariableReference(binaryExpr.RHS) && !isFunctionCall(binaryExpr.RHS))
-		case hclsyntax.OpLogicalAnd, hclsyntax.OpLogicalOr:
-			// Recursively check nested logical operations
-			return hasDirectVariableComparisonRecursive(binaryExpr.LHS) ||
-				hasDirectVariableComparisonRecursive(binaryExpr.RHS)
-		}
-	}
-	return false
 }
 
 func hasDirectVariableComparisonRecursiveForVar(expr hcl.Expression, varName string) bool {
@@ -186,12 +145,6 @@ func hasDirectVariableComparisonRecursiveForVar(expr hcl.Expression, varName str
 	return false
 }
 
-func hasDirectVariableReference(expr *hclsyntax.BinaryOpExpr) bool {
-	// Check if either side has a direct variable reference (not wrapped in function calls)
-	return (isVariableReference(expr.LHS) && !isFunctionCall(expr.LHS)) ||
-		(isVariableReference(expr.RHS) && !isFunctionCall(expr.RHS))
-}
-
 func hasDirectVariableReferenceForVar(expr *hclsyntax.BinaryOpExpr, varName string) bool {
 	// Check if either side has a direct variable reference (not wrapped in function calls)
 	return (isVariableReferenceForVar(expr.LHS, varName) && !isFunctionCall(expr.LHS)) ||
@@ -201,19 +154,6 @@ func hasDirectVariableReferenceForVar(expr *hclsyntax.BinaryOpExpr, varName stri
 func isFunctionCall(expr hcl.Expression) bool {
 	_, ok := expr.(*hclsyntax.FunctionCallExpr)
 	return ok
-}
-
-func isVariableReference(expr hcl.Expression) bool {
-	// First unwrap any parentheses
-	if paren, ok := expr.(*hclsyntax.ParenthesesExpr); ok {
-		return isVariableReference(paren.Expression)
-	}
-
-	if traversal, ok := expr.(*hclsyntax.ScopeTraversalExpr); ok {
-		rootName := traversal.Traversal.RootName()
-		return rootName == "var" || rootName == "self"
-	}
-	return false
 }
 
 func isVariableReferenceForVar(expr hcl.Expression, varName string) bool {
