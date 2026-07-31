@@ -187,10 +187,9 @@ func (c *Converter) convertVariableBlock(block *hcl.Block, content *hcl.BodyCont
 		if err != nil {
 			return nil, fmt.Errorf("failed to convert type: %w", err)
 		}
-	} else {
-		// If no type is specified, it defaults to `any` which we can treat as an empty schema
-		// waiting for type inference from the default value later.
 	}
+	// When no type is specified the variable defaults to `any`; schema stays empty
+	// and type inference fills it in from the default value below.
 
 	// Apply all variable attributes (description, default, sensitive, nullable etc.)
 	if err := c.attributeProcessor.ApplyAttributes(schema, content.Attributes); err != nil {
